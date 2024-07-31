@@ -1,10 +1,13 @@
 package books_api.books_api.controller;
 
 import books_api.books_api.entity.Book;
-import books_api.books_api.exception.BookNotFoundException;
+import books_api.books_api.exception_handler.BookNotFoundException;
+import books_api.books_api.exception_handler.EmptyDataBaseException;
+import books_api.books_api.exception_handler.InvalidDateFormatException;
 import books_api.books_api.services.BookService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,23 +27,36 @@ public class BookRestController {
     }
 
     @GetMapping("/books")
-    public List<Book> retrieveAll(){
-        return services.findAll();
+    public ResponseEntity<?> retrieveAll() throws EmptyDataBaseException {
+        List<Book> tempList = services.findAll();
+        return new ResponseEntity<>(tempList, HttpStatus.OK);
     }
 
     @GetMapping("/books/{bookId}")
-    public Optional<Book> retrieveBookById(@PathVariable Integer bookId) throws BookNotFoundException {
-        return services.getBookById(bookId);
+    public ResponseEntity<?> retrieveBookById(@PathVariable Integer bookId) throws BookNotFoundException {
+        Book book = services.getBookById(bookId);
+        if (book == null) {
+            throw new BookNotFoundException("Book with id " + bookId + " not found");
+        }
+        return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
     @PostMapping("/books")
-    public Book saveNewBook(@RequestBody Book newBook) {
-        return services.addBook(newBook);
+    public ResponseEntity<?> saveNewBook(@RequestBody Book newBook) throws InvalidDateFormatException{
+        Book tempBook = services.addBook(newBook);
+        return new ResponseEntity<>(tempBook, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/books/{toUpdateId}")
+    public ResponseEntity<?> updateBook(@RequestBody Book updateBook, @PathVariable Integer toUpdateId) throws BookNotFoundException{
+        Book tempBook = services.updateBook(updateBook, toUpdateId);
+        return new ResponseEntity<>(tempBook, HttpStatus.OK);
     }
 
     @DeleteMapping("/books/{toDeleteId}")
-    public String deleteBookById(@PathVariable Integer toDeleteId) throws BookNotFoundException{
-        return services.deleteBookById(toDeleteId);
+    public ResponseEntity<?> deleteBookById(@PathVariable Integer toDeleteId) throws BookNotFoundException{
+        String deleteMessage = services.deleteBookById(toDeleteId);
+        return new ResponseEntity<>(deleteMessage, HttpStatus.NO_CONTENT);
     }
 
 
