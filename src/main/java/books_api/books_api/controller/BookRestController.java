@@ -3,7 +3,7 @@ package books_api.books_api.controller;
 import books_api.books_api.entity.Book;
 import books_api.books_api.exception_handler.BookNotFoundException;
 import books_api.books_api.exception_handler.EmptyDataBaseException;
-import books_api.books_api.exception_handler.InvalidDateFormatException;
+import books_api.books_api.exception_handler.QueryFailedException;
 import books_api.books_api.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,13 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/api")
 public class BookRestController {
-
 
     private final BookService services;
 
@@ -41,8 +38,20 @@ public class BookRestController {
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
+    @GetMapping("/books/category/{bookCategory}")
+    public ResponseEntity<?> retrieveBooksByCategory(@PathVariable String bookCategory) throws QueryFailedException {
+        List<Book> retrievedBooks = services.queryFromCategory(bookCategory);
+        return new ResponseEntity<>(retrievedBooks, HttpStatus.OK);
+    }
+
+    @GetMapping("/books/status/{bookStatus}")
+    public ResponseEntity<?> retrieveBooksByStatus(@PathVariable String bookStatus) throws QueryFailedException {
+        List<Book> retrievedBooks = services.queryFromStatus(bookStatus);
+        return new ResponseEntity<>(retrievedBooks, HttpStatus.OK);
+    }
+
     @PostMapping("/books")
-    public ResponseEntity<?> saveNewBook(@RequestBody Book newBook) throws InvalidDateFormatException{
+    public ResponseEntity<?> saveNewBook(@RequestBody Book newBook){
         Book tempBook = services.addBook(newBook);
         return new ResponseEntity<>(tempBook, HttpStatus.CREATED);
     }

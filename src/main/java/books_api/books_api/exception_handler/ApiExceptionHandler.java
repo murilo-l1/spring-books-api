@@ -13,21 +13,22 @@ import java.util.Date;
 public class ApiExceptionHandler {
 
 
-    /*@ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetails> handleGlobalException(Exception ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-    }*/
+    }
 
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<?> handleBookFoundException(BookNotFoundException e ,WebRequest request){
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(true));
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(InvalidDateFormatException.class)
-    public ResponseEntity<?> handleInvalidDateFormatException(InvalidDateFormatException e, WebRequest request){
+    @ExceptionHandler(QueryFailedException.class)
+    public ResponseEntity<?> handleQueryFailedException(QueryFailedException e, WebRequest request){
         ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+
 }

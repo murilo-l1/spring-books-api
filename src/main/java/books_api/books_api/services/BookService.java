@@ -3,7 +3,7 @@ package books_api.books_api.services;
 import books_api.books_api.entity.Book;
 import books_api.books_api.exception_handler.BookNotFoundException;
 import books_api.books_api.exception_handler.EmptyDataBaseException;
-import books_api.books_api.exception_handler.InvalidDateFormatException;
+import books_api.books_api.exception_handler.QueryFailedException;
 import books_api.books_api.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,15 +29,28 @@ public class BookService {
         return books;
     }
 
+    public List<Book> queryFromCategory(String category) throws QueryFailedException{
+        List<Book> queriedBooks = repository.queryBooksByCategory(category);
+        if(queriedBooks.isEmpty()){
+            throw new QueryFailedException("No such a list of books within: " + category);
+        }
+        return queriedBooks;
+    }
+
+    public List<Book> queryFromStatus(String status) throws QueryFailedException{
+        List<Book> queriedBooks = repository.queryBooksByStatus(status);
+        if(queriedBooks.isEmpty()){
+            throw new QueryFailedException("No such a list of books with this status: " + status);
+        }
+        return queriedBooks;
+    }
+
     public Book getBookById(Integer bookId) throws BookNotFoundException {
         return repository.findById(bookId).orElseThrow(() ->
                 new BookNotFoundException("This book couldn't be found in our database"));
     }
 
-    public Book addBook(Book newBook) throws InvalidDateFormatException {
-        if (newBook.getBookReleaseDate() == null) {
-            throw new InvalidDateFormatException("Your request failed due to the date format being passed");
-        }
+    public Book addBook(Book newBook) {
         newBook.setBookId(null); // Ensure the ID is null so it will be auto-generated
         return repository.save(newBook);
     }
