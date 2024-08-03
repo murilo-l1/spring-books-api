@@ -1,8 +1,8 @@
 package books_api.books_api.controller;
 
+import books_api.books_api.dto.BookResponseDTO;
 import books_api.books_api.entity.Book;
 import books_api.books_api.exception_handler.BookNotFoundException;
-import books_api.books_api.exception_handler.EmptyDataBaseException;
 import books_api.books_api.exception_handler.QueryFailedException;
 import books_api.books_api.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
 public class BookRestController {
 
     private final BookService services;
+    private BookResponseDTO responseDTO = new BookResponseDTO();
 
     @Autowired
     public BookRestController(BookService services) {
@@ -24,49 +24,54 @@ public class BookRestController {
     }
 
     @GetMapping("/books")
-    public ResponseEntity<?> retrieveAll() throws EmptyDataBaseException {
-        List<Book> tempList = services.findAll();
-        return new ResponseEntity<>(tempList, HttpStatus.OK);
+    public ResponseEntity<List<BookResponseDTO>> retrieveAll() {
+        List<BookResponseDTO> retrievedBookList = responseDTO.createResponseFromList(services.findAll());
+        return new ResponseEntity<>(retrievedBookList, HttpStatus.OK);
     }
 
     @GetMapping("/books/{bookId}")
-    public ResponseEntity<?> retrieveBookById(@PathVariable Integer bookId) throws BookNotFoundException {
+    public ResponseEntity<BookResponseDTO> retrieveBookById(@PathVariable Integer bookId) throws BookNotFoundException {
         Book book = services.getBookById(bookId);
-        if (book == null) {
-            throw new BookNotFoundException("Book with id " + bookId + " not found");
-        }
-        return new ResponseEntity<>(book, HttpStatus.OK);
+        BookResponseDTO response = responseDTO.createResponseFromBook(book);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/books/category/{bookCategory}")
-    public ResponseEntity<?> retrieveBooksByCategory(@PathVariable String bookCategory) throws QueryFailedException {
-        List<Book> retrievedBooks = services.queryFromCategory(bookCategory);
+    public ResponseEntity<List<BookResponseDTO>> retrieveBooksByCategory(@PathVariable String bookCategory) throws QueryFailedException, BookNotFoundException {
+        List<BookResponseDTO> retrievedBooks = responseDTO.createResponseFromList(services.queryFromCategory(bookCategory));
         return new ResponseEntity<>(retrievedBooks, HttpStatus.OK);
     }
 
     @GetMapping("/books/status/{bookStatus}")
-    public ResponseEntity<?> retrieveBooksByStatus(@PathVariable String bookStatus) throws QueryFailedException {
-        List<Book> retrievedBooks = services.queryFromStatus(bookStatus);
+    public ResponseEntity<List<BookResponseDTO>> retrieveBooksByStatus(@PathVariable String bookStatus) throws QueryFailedException {
+        List<BookResponseDTO> retrievedBooks = responseDTO.createResponseFromList(services.queryFromStatus(bookStatus));
+        return new ResponseEntity<>(retrievedBooks, HttpStatus.OK);
+    }
+
+    @GetMapping("/books/author/{bookAuthor}")
+    public ResponseEntity<List<BookResponseDTO>> retrieveBooksByAuthor(@PathVariable String bookAuthor) throws QueryFailedException {
+        List<BookResponseDTO> retrievedBooks = responseDTO.createResponseFromList(services.queryFromAuthor(bookAuthor));
         return new ResponseEntity<>(retrievedBooks, HttpStatus.OK);
     }
 
     @PostMapping("/books")
-    public ResponseEntity<?> saveNewBook(@RequestBody Book newBook){
+    public ResponseEntity<Book> saveNewBook(@RequestBody Book newBook){
         Book tempBook = services.addBook(newBook);
         return new ResponseEntity<>(tempBook, HttpStatus.CREATED);
     }
 
     @PutMapping("/books/{toUpdateId}")
-    public ResponseEntity<?> updateBook(@RequestBody Book updateBook, @PathVariable Integer toUpdateId) throws BookNotFoundException{
+    public ResponseEntity<Book> updateBook(@RequestBody Book updateBook, @PathVariable Integer toUpdateId) throws BookNotFoundException{
         Book tempBook = services.updateBook(updateBook, toUpdateId);
         return new ResponseEntity<>(tempBook, HttpStatus.OK);
     }
 
     @DeleteMapping("/books/{toDeleteId}")
-    public ResponseEntity<?> deleteBookById(@PathVariable Integer toDeleteId) throws BookNotFoundException{
+    public ResponseEntity<String> deleteBookById(@PathVariable Integer toDeleteId) throws BookNotFoundException{
         String deleteMessage = services.deleteBookById(toDeleteId);
         return new ResponseEntity<>(deleteMessage, HttpStatus.NO_CONTENT);
     }
+
 
 
 }

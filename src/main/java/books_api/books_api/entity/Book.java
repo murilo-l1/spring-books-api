@@ -2,6 +2,8 @@ package books_api.books_api.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -27,7 +29,7 @@ public class Book {
 
     @JsonProperty("release_date")
     @Column(name = "release_date")
-    private Date bookReleaseDate;
+    private LocalDateTime bookReleaseDate;
 
     @JsonProperty("status")
     @Column(name = "status")
@@ -40,7 +42,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(String bookTitle, String bookAuthor, Integer bookNumPages, Date bookReleaseDate, String bookStatus, String bookCategory) {
+    public Book(String bookTitle, String bookAuthor, Integer bookNumPages, LocalDateTime bookReleaseDate, String bookStatus, String bookCategory) {
         this.bookTitle = bookTitle;
         this.bookAuthor = bookAuthor;
         this.bookNumPages = bookNumPages;
@@ -69,7 +71,7 @@ public class Book {
         return bookNumPages;
     }
 
-    public Date getBookReleaseDate() {
+    public LocalDateTime getBookReleaseDate() {
         return bookReleaseDate;
     }
 

@@ -15,7 +15,10 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
    @Query(value="SELECT b from Book b where b.bookCategory = :category")
    List<Book> queryBooksByCategory(@Param("category") String category);
 
-   @Query(value="SELECT b FROM Book b where b.bookStatus = :status")
+   @Query("SELECT b FROM Book b where b.bookStatus = :status")
    List<Book> queryBooksByStatus(@Param("status") String status);
+
+   @Query("select b from Book b where b.bookAuthor = :author")
+   List<Book> queryBooksByAuthor(@Param("author") String author);
 
 }
