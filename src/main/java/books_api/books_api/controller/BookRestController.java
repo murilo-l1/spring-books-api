@@ -16,11 +16,12 @@ import java.util.List;
 public class BookRestController {
 
     private final BookService services;
-    private BookResponseDTO responseDTO = new BookResponseDTO();
+    private final BookResponseDTO responseDTO;
 
     @Autowired
-    public BookRestController(BookService services) {
+    public BookRestController(BookService services, BookResponseDTO dto) {
         this.services = services;
+        this.responseDTO = dto;
     }
 
     @GetMapping("/books")
@@ -71,7 +72,5 @@ public class BookRestController {
         String deleteMessage = services.deleteBookById(toDeleteId);
         return new ResponseEntity<>(deleteMessage, HttpStatus.NO_CONTENT);
     }
-
-
 
 }
