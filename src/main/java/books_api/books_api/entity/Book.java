@@ -1,6 +1,8 @@
 package books_api.books_api.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -28,6 +30,8 @@ public class Book {
     private Integer bookNumPages;
 
     @JsonProperty("release_date")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @Column(name = "release_date")
     private LocalDateTime bookReleaseDate;
 

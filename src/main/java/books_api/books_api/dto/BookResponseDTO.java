@@ -23,7 +23,7 @@ public class BookResponseDTO {
         this.id = id;
         this.name = name;
         this.author = author;
-        this.releaseDate = releaseDate.format(DateTimeFormatter.ofPattern("dd, MMMM yyyy"));
+        this.releaseDate = (releaseDate != null) ? releaseDate.format(DateTimeFormatter.ofPattern("dd, MMMM yyyy")) : null;
         this.status = status;
         this.category = category;
     }
@@ -34,6 +34,7 @@ public class BookResponseDTO {
     public BookResponseDTO createResponseFromBook(Book book){
         return new BookResponseDTO(book.getBookId(), book.getBookTitle(), book.getBookAuthor(), book.getBookReleaseDate(), book.getBookStatus(), book.getBookCategory());
     }
+
 
     public List<BookResponseDTO> createResponseFromList(List<Book> tempList) {
         List<BookResponseDTO> dtoList = new ArrayList<>();

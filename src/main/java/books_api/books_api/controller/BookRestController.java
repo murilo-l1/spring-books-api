@@ -38,7 +38,7 @@ public class BookRestController {
     }
 
     @GetMapping("/books/category/{bookCategory}")
-    public ResponseEntity<List<BookResponseDTO>> retrieveBooksByCategory(@PathVariable String bookCategory) throws QueryFailedException, BookNotFoundException {
+    public ResponseEntity<List<BookResponseDTO>> retrieveBooksByCategory(@PathVariable String bookCategory) throws QueryFailedException{
         List<BookResponseDTO> retrievedBooks = responseDTO.createResponseFromList(services.queryFromCategory(bookCategory));
         return new ResponseEntity<>(retrievedBooks, HttpStatus.OK);
     }

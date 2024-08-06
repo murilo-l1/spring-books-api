@@ -12,15 +12,16 @@ import java.util.Date;
 @ControllerAdvice
 public class ApiExceptionHandler {
 
-
-    /*@ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetails> handleGlobalException(Exception ex, WebRequest request) {
+        System.out.println("Default exception was thrown");
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-    }*/
+    }
 
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<?> handleBookFoundException(BookNotFoundException e, WebRequest request){
+        System.out.println("Custom exception was thrown");
         ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
