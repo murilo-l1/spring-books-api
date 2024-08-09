@@ -51,14 +51,14 @@ public class BookSecurityConfig {
         // GET -> USER / POST || PUT || DELETE -> ADMIN
         http.authorizeHttpRequests(configurer ->
                 configurer
-                        .requestMatchers(HttpMethod.GET, "books/").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "books/**").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "books/author/**").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "books/category/**").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "books/status/**").hasRole("USER")
-                        .requestMatchers(HttpMethod.POST, "books").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "books/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "books/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "api/books/").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "api/books/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "api/books/author/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "api/books/category/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "api/books/status/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "api/books").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "api/books/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "api/books/**").hasRole("ADMIN")
                         // swagger enabled for all users
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
         );

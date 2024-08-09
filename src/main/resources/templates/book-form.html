@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register book</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .radio-group {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem; /* Adjust the gap between radio buttons as needed */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <br>
+    <h1>Register a new Book</h1>
+    <hr>
+    <br><br>
+    <form th:action="@{/books/save}" th:object="${book}" method="POST">
+
+        <!-- hidden field for update purposes -->
+        <input type="hidden" th:field="*{bookId}">
+
+        <!-- Book fields -->
+        <div class="mb-4 w-25">
+            <input type="text" th:field="*{bookTitle}" class="form-control" placeholder="Title"
+                   th:classappend="${#fields.hasErrors('bookTitle')}? 'is-invalid'">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('bookTitle')}"
+                 th:errors="*{bookTitle}">Title is required</div>
+        </div>
+
+        <div class="mb-4 w-25">
+            <input type="text" th:field="*{bookAuthor}" class="form-control" placeholder="Author"
+                   th:classappend="${#fields.hasErrors('bookAuthor')}? 'is-invalid'">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('bookAuthor')}"
+                 th:errors="*{bookAuthor}">Author is required</div>
+        </div>
+
+        <div class="mb-4 w-25">
+            <input type="number" th:field="*{bookNumPages}" class="form-control" placeholder="Pages"
+                   th:classappend="${#fields.hasErrors('bookNumPages')}? 'is-invalid'">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('bookNumPages')}"
+                 th:errors="*{bookNumPages}">Number of pages is required</div>
+        </div>
+
+        <div class="mb-4 w-25">
+            <input type="date" th:field="*{bookReleaseDate}" class="form-control" placeholder="zzzz"
+                   th:classappend="${#fields.hasErrors('bookReleaseDate')}? 'is-invalid'">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('bookReleaseDate')}"
+                 th:errors="*{bookReleaseDate}">Date is required</div>
+        </div>
+
+        <div class="mb-4 w-25">
+            <input type="text" th:field="*{bookCategory}" class="form-control" placeholder="Category"
+                   th:classappend="${#fields.hasErrors('bookCategory')}? 'is-invalid'">
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('bookCategory')}"
+                 th:errors="*{bookCategory}">Category is required</div>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label"><b>Book Status:</b></label>
+            <div class="radio-group">
+                <div>
+                    <input type="radio" th:field="*{bookStatus}" value="to-read"
+                           th:classappend="${#fields.hasErrors('bookStatus')} ? 'is-invalid'">
+                    <label>To Read</label>
+                </div>
+                <div>
+                    <input type="radio" th:field="*{bookStatus}" value="reading"
+                           th:classappend="${#fields.hasErrors('bookStatus')} ? 'is-invalid'">
+                    <label>Reading</label>
+                </div>
+                <div>
+                    <input type="radio" th:field="*{bookStatus}" value="read"
+                           th:classappend="${#fields.hasErrors('bookStatus')} ? 'is-invalid'">
+                    <label>Read</label>
+                </div>
+            </div>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('bookStatus')}"
+                 th:errors="*{bookStatus}">Status is required</div>
+        </div>
+
+        <!-- Buttons -->
+        <button type="submit" class="btn btn-success col-2">Save</button>
+        <button type="reset" class="btn btn-outline-secondary">Clear</button>
+    </form>
+    <hr>
+    <a th:href="@{/books/list}" class="btn btn-outline-primary">Go back to list</a>
+</div>
+</body>
+</html>

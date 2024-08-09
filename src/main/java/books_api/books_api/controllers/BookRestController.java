@@ -1,4 +1,4 @@
-package books_api.books_api.controller;
+package books_api.books_api.controllers;
 
 import books_api.books_api.dto.BookResponseDTO;
 import books_api.books_api.entity.Book;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class BookRestController {
 
     private final BookServiceImpl services;
