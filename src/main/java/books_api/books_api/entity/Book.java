@@ -59,6 +59,10 @@ public class Book {
         this.bookId = bookId;
     }
 
+    public void setBookTitle(String bookTitle) {
+        this.bookTitle = bookTitle;
+    }
+
     public Integer getBookId() {
         return bookId;
     }
@@ -86,4 +90,5 @@ public class Book {
     public String getBookCategory() {
         return bookCategory;
     }
+
 }

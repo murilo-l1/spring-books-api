@@ -1,4 +1,4 @@
-package books_api.books_api.repository;
+package books_api.books_api.dao;
 
 
 import books_api.books_api.entity.Book;

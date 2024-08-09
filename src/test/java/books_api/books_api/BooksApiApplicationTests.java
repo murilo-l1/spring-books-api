@@ -1,12 +1,11 @@
 package books_api.books_api;
 
 import books_api.books_api.controller.BookRestController;
-import books_api.books_api.services.BookService;
+import books_api.books_api.services.BookServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,7 +21,7 @@ class BooksApiApplicationTests {
 	private MockMvc mockTester;
 
 	@MockBean
-	private BookService service;
+	private BookServiceImpl service;
 
 	@Test
 	void testRetrieveAllBooks() throws Exception {

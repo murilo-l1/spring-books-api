@@ -4,7 +4,7 @@ import books_api.books_api.dto.BookResponseDTO;
 import books_api.books_api.entity.Book;
 import books_api.books_api.exception_handler.BookNotFoundException;
 import books_api.books_api.exception_handler.QueryFailedException;
-import books_api.books_api.services.BookService;
+import books_api.books_api.services.BookServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +15,11 @@ import java.util.List;
 @RestController
 public class BookRestController {
 
-    private final BookService services;
+    private final BookServiceImpl services;
     private final BookResponseDTO responseDTO;
 
     @Autowired
-    public BookRestController(BookService services, BookResponseDTO dto) {
+    public BookRestController(BookServiceImpl services, BookResponseDTO dto) {
         this.services = services;
         this.responseDTO = dto;
     }
@@ -63,14 +63,14 @@ public class BookRestController {
 
     @PutMapping("/books/{toUpdateId}")
     public ResponseEntity<Book> updateBook(@RequestBody Book updateBook, @PathVariable Integer toUpdateId) throws BookNotFoundException{
-        Book tempBook = services.updateBook(updateBook, toUpdateId);
+        Book tempBook = services.updateBookById(updateBook, toUpdateId);
         return new ResponseEntity<>(tempBook, HttpStatus.OK);
     }
 
     @DeleteMapping("/books/{toDeleteId}")
-    public ResponseEntity<String> deleteBookById(@PathVariable Integer toDeleteId) throws BookNotFoundException{
-        String deleteMessage = services.deleteBookById(toDeleteId);
-        return new ResponseEntity<>(deleteMessage, HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> deleteBookById(@PathVariable Integer toDeleteId) throws BookNotFoundException{
+        services.deleteBookById(toDeleteId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

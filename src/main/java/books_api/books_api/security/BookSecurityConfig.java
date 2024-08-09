@@ -1,3 +1,6 @@
+// Segurança temporariamente desabilitada para integração com MVC
+/*
+
 package books_api.books_api.security;
 
 import org.springframework.context.annotation.Bean;
@@ -11,6 +14,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import javax.sql.DataSource;
+
 
 
 @Configuration
@@ -65,4 +69,4 @@ public class BookSecurityConfig {
         return http.build();
     }
 
-}
+}*/
