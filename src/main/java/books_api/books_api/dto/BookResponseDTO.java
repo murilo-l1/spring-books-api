@@ -5,8 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class BookResponseDTO {
@@ -40,7 +39,7 @@ public class BookResponseDTO {
                 book.getBookTitle(),
                 book.getBookAuthor(),
                 book.getBookNumPages(),
-                book.getBookReleaseDate(), // Pass LocalDate to the constructor
+                book.getBookReleaseDate(),
                 book.getBookStatus(),
                 book.getBookCategory()
         );
@@ -56,8 +55,14 @@ public class BookResponseDTO {
                 dtoList.add(parsedBook);
             }
         }
-
+        // return a sorted list descending order
+        dtoList = sortDescOrder(dtoList);
         return dtoList;
+    }
+
+    private List<BookResponseDTO> sortDescOrder(List<BookResponseDTO> list) {
+        Collections.sort(list, (b1, b2) -> Integer.compare(b2.getId(), b1.getId())); // Descending order
+        return list;
     }
 
     // Getters and setters

@@ -61,13 +61,15 @@ public class BookServiceImpl implements BookService{
         return repository.save(newBook);
     }
 
-    public Book updateBookById(Book toUpdateBookContent, Integer toUpdateId) throws BookNotFoundException{
-        Optional<Book> checkBook = repository.findById(toUpdateId);
-        if(checkBook.isEmpty()){
-            throw new BookNotFoundException("Book with id: " + toUpdateId + " couldn't be found");
-        }
-        toUpdateBookContent.setBookId(toUpdateId);
-        return repository.save(toUpdateBookContent);
+    public Book updateBookById(Book toUpdateBookContent, Integer toUpdateId) throws BookNotFoundException {
+        // Retrieve the existing book from the database
+        Book existingBook = repository.findById(toUpdateId)
+                .orElseThrow(() -> new BookNotFoundException("Book with id: " + toUpdateId + " couldn't be found"));
+
+        // assure the book being updated get all existing book attributes
+        updateContent(toUpdateBookContent, existingBook);
+
+        return repository.save(existingBook);
     }
 
     public void deleteBookById(Integer id) throws BookNotFoundException {
@@ -75,6 +77,28 @@ public class BookServiceImpl implements BookService{
             throw new BookNotFoundException("A book with this id couldn't be found to delete");
         }
         repository.deleteById(id);
+    }
+
+    private void updateContent(Book toUpdateBookContent, Book existingBook){
+        // Update the fields of the existing book with the new content
+        if (toUpdateBookContent.getBookTitle() != null) {
+            existingBook.setBookTitle(toUpdateBookContent.getBookTitle());
+        }
+        if (toUpdateBookContent.getBookAuthor() != null) {
+            existingBook.setBookAuthor(toUpdateBookContent.getBookAuthor());
+        }
+        if (toUpdateBookContent.getBookNumPages() != null) {
+            existingBook.setBookNumPages(toUpdateBookContent.getBookNumPages());
+        }
+        if (toUpdateBookContent.getBookReleaseDate() != null) {
+            existingBook.setBookReleaseDate(toUpdateBookContent.getBookReleaseDate());
+        }
+        if (toUpdateBookContent.getBookStatus() != null) {
+            existingBook.setBookStatus(toUpdateBookContent.getBookStatus());
+        }
+        if (toUpdateBookContent.getBookCategory() != null) {
+            existingBook.setBookCategory(toUpdateBookContent.getBookCategory());
+        }
     }
 
 }

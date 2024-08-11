@@ -6,19 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
-<body>
+<body style="background-color: #cdccc7">
 <div class="container">
-<br>
-<h1>Book Shelf 📚</h1>
-<hr>
+    <br>
+    <div class="d-flex justify-content-between align-items-center">
+        <!-- Centered title -->
+        <h1 class="flex-grow-1 text-left">Bookshelf 📚</h1>
+        <!-- Right-aligned button -->
+        <a class="btn btn-success btn-lg" th:href="@{/swagger-ui.html}">
+            Go to embedded API
+        </a>
+    </div>
+    <hr>
 
 <!-- Add Button -->
     <a class="btn btn-primary col-12 mb-4"
        th:href="@{/books/showFormForAdd}">
         Add Book</a>
 
- <table class="table table-bordered table-striped">
-    <!-- Table Head/Properties -->
+ <table class="table table-hover table-dark table-bordered table-striped">
+    <caption>Books retrieved from database</caption>
+     <!-- Table Head/Properties -->
     <thead class="table-dark">
     <tr>
         <th>Title</th>
@@ -34,7 +42,7 @@
     <!-- Table Body containing all info -->
     <tbody>
 
-        <tr th:each="tempBook : ${parsedBooks}" >
+        <tr th:each="tempBook : ${parsedBooks}">
             <td th:text="${tempBook.title}"></td>
             <td th:text="${tempBook.author}"></td>
             <td th:text="${tempBook.numPages}"></td>
@@ -45,7 +53,7 @@
             <td>
                 <div class="d-flex align-items-center">
                     <a th:href="@{/books/showFormToUpdate(bookId=${tempBook.id})}"
-                       class="btn btn-info flex-grow-1 me-2">
+                       class="btn btn-primary flex-grow-1 me-2">
                         Update
                     </a>
                     <a th:href="@{/books/deleteBookById(bookId=${tempBook.id})}"

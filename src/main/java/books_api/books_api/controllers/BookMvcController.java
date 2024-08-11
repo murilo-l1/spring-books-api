@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -45,22 +47,27 @@ public class BookMvcController {
     }
 
     @PostMapping("/save")
-    public String saveEmployee(@Valid @ModelAttribute("book") Book formBook, BindingResult result){
+    public String saveEmployee(@Valid @ModelAttribute("book") Book formBook, BindingResult result) throws BookNotFoundException{
         if(result.hasErrors()){
             return "book-form";
         }
 
-        service.addBook(formBook);
+        // if what gets on form is an existing book, update it, if a new, add it
+        if(formBook.getBookId() != null){
+            service.updateBookById(formBook, formBook.getBookId());
+        }else{
+            service.addBook(formBook);
+        }
         return "redirect:/books/list";
     }
 
     @GetMapping("/showFormToUpdate")
     public String showFormToUpdate(@RequestParam("bookId") Integer bookId, Model model) throws BookNotFoundException {
         Book toUpdateBook = service.getBookById(bookId);
-        //toUpdateBook.setBookReleaseDate(toUpdateBook.getBookReleaseDate());
         model.addAttribute("book", toUpdateBook);
         return "book-form";
     }
+
 
     @GetMapping("/deleteBookById")
     public String deleteBookById(@RequestParam("bookId") Integer bookId) throws BookNotFoundException{
