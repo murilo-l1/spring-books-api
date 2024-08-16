@@ -11,12 +11,12 @@ import java.util.List;
 public interface BookService {
 
     List<Book> findAll();
-    List<Book> queryFromCategory(String category) throws QueryFailedException;
-    List<Book> queryFromStatus(String status) throws QueryFailedException;
-    List<Book> queryFromAuthor(String author) throws QueryFailedException;
-    Book getBookById(Integer bookId) throws BookNotFoundException;
+    List<Book> queryFromCategory(String category);
+    List<Book> queryFromStatus(String status);
+    List<Book> queryFromAuthor(String author);
+    Book getBookById(Integer bookId);
     Book addBook(Book book);
-    Book updateBookById(Book toUpdateContent, Integer toUpdateId) throws BookNotFoundException;
-    void deleteBookById(Integer bookId) throws BookNotFoundException;
+    Book updateBookById(Book toUpdateContent, Integer toUpdateId);
+    void deleteBookById(Integer bookId) ;
 
 }

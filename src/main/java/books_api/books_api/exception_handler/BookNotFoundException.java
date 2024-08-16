@@ -1,10 +1,11 @@
 package books_api.books_api.exception_handler;
 
 
-public class BookNotFoundException extends Exception{
+import books_api.books_api.constants.ReasonConstants;
 
-    public BookNotFoundException(String message) {
-        super(message);
+public class BookNotFoundException extends NotFoundException{
+
+    public BookNotFoundException() {
+        super(ReasonConstants.BOOK_NOT_FOUND);
     }
-
 }

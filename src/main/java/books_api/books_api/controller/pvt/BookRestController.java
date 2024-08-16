@@ -1,6 +1,6 @@
-package books_api.books_api.controllers;
+package books_api.books_api.controller.pvt;
 
-import books_api.books_api.dto.BookResponseDTO;
+import books_api.books_api.dto.BookDto;
 import books_api.books_api.entity.Book;
 import books_api.books_api.exception_handler.BookNotFoundException;
 import books_api.books_api.exception_handler.QueryFailedException;
@@ -17,42 +17,40 @@ import java.util.List;
 public class BookRestController {
 
     private final BookServiceImpl services;
-    private final BookResponseDTO responseDTO;
 
     @Autowired
-    public BookRestController(BookServiceImpl services, BookResponseDTO dto) {
+    public BookRestController(BookServiceImpl services) {
         this.services = services;
-        this.responseDTO = dto;
     }
 
     @GetMapping("/books")
-    public ResponseEntity<List<BookResponseDTO>> retrieveAll() {
-        List<BookResponseDTO> retrievedBookList = responseDTO.createResponseFromList(services.findAll());
+    public ResponseEntity<List<BookDto>> retrieveAll() {
+        List<BookDto> retrievedBookList = BookDto.toListDto(services.findAll());
         return new ResponseEntity<>(retrievedBookList, HttpStatus.OK);
     }
 
     @GetMapping("/books/{bookId}")
-    public ResponseEntity<BookResponseDTO> retrieveBookById(@PathVariable Integer bookId) throws BookNotFoundException {
+    public ResponseEntity<BookDto> retrieveBookById(@PathVariable Integer bookId) throws BookNotFoundException {
         Book book = services.getBookById(bookId);
-        BookResponseDTO response = responseDTO.createResponseFromBook(book);
+        BookDto response = BookDto.toDto(book);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/books/category/{bookCategory}")
-    public ResponseEntity<List<BookResponseDTO>> retrieveBooksByCategory(@PathVariable String bookCategory) throws QueryFailedException{
-        List<BookResponseDTO> retrievedBooks = responseDTO.createResponseFromList(services.queryFromCategory(bookCategory));
+    public ResponseEntity<List<BookDto>> retrieveBooksByCategory(@PathVariable String bookCategory) throws QueryFailedException{
+        List<BookDto> retrievedBooks = BookDto.toListDto(services.queryFromCategory(bookCategory));
         return new ResponseEntity<>(retrievedBooks, HttpStatus.OK);
     }
 
     @GetMapping("/books/status/{bookStatus}")
-    public ResponseEntity<List<BookResponseDTO>> retrieveBooksByStatus(@PathVariable String bookStatus) throws QueryFailedException {
-        List<BookResponseDTO> retrievedBooks = responseDTO.createResponseFromList(services.queryFromStatus(bookStatus));
+    public ResponseEntity<List<BookDto>> retrieveBooksByStatus(@PathVariable String bookStatus) throws QueryFailedException {
+        List<BookDto> retrievedBooks = BookDto.toListDto(services.queryFromStatus(bookStatus));
         return new ResponseEntity<>(retrievedBooks, HttpStatus.OK);
     }
 
     @GetMapping("/books/author/{bookAuthor}")
-    public ResponseEntity<List<BookResponseDTO>> retrieveBooksByAuthor(@PathVariable String bookAuthor) throws QueryFailedException {
-        List<BookResponseDTO> retrievedBooks = responseDTO.createResponseFromList(services.queryFromAuthor(bookAuthor));
+    public ResponseEntity<List<BookDto>> retrieveBooksByAuthor(@PathVariable String bookAuthor) throws QueryFailedException {
+        List<BookDto> retrievedBooks = BookDto.toListDto(services.queryFromAuthor(bookAuthor));
         return new ResponseEntity<>(retrievedBooks, HttpStatus.OK);
     }
 

@@ -24,7 +24,7 @@ public class BookServiceImpl implements BookService{
         return repository.findAll();
     }
 
-    public List<Book> queryFromCategory(String category) throws QueryFailedException{
+    public List<Book> queryFromCategory(String category) {
         List<Book> queriedBooks = repository.queryBooksByCategory(category);
         if(queriedBooks.isEmpty()){
             throw new QueryFailedException("No such a list of books within: " + category);
@@ -32,7 +32,7 @@ public class BookServiceImpl implements BookService{
         return queriedBooks;
     }
 
-    public List<Book> queryFromStatus(String status) throws QueryFailedException{
+    public List<Book> queryFromStatus(String status) {
         List<Book> queriedBooks = repository.queryBooksByStatus(status);
         if(queriedBooks.isEmpty()){
             throw new QueryFailedException("No such a list of books with this status: " + status);
@@ -40,7 +40,7 @@ public class BookServiceImpl implements BookService{
         return queriedBooks;
     }
 
-    public List<Book> queryFromAuthor(String author) throws QueryFailedException{
+    public List<Book> queryFromAuthor(String author) {
         List<Book> queriedBooks = repository.queryBooksByAuthor(author);
         if(queriedBooks.isEmpty()){
             throw new QueryFailedException("No such a list of books of this author: " + author);
@@ -48,7 +48,7 @@ public class BookServiceImpl implements BookService{
         return queriedBooks;
     }
 
-    public Book getBookById(Integer bookId) throws BookNotFoundException {
+    public Book getBookById(Integer bookId) {
         Optional<Book> tempBook = repository.findById(bookId);
         if(tempBook.isEmpty()){
             throw new BookNotFoundException("Couldn't find a book with this id: " + bookId);
@@ -61,7 +61,7 @@ public class BookServiceImpl implements BookService{
         return repository.save(newBook);
     }
 
-    public Book updateBookById(Book toUpdateBookContent, Integer toUpdateId) throws BookNotFoundException {
+    public Book updateBookById(Book toUpdateBookContent, Integer toUpdateId) {
         // Retrieve the existing book from the database
         Book existingBook = repository.findById(toUpdateId)
                 .orElseThrow(() -> new BookNotFoundException("Book with id: " + toUpdateId + " couldn't be found"));
@@ -72,7 +72,7 @@ public class BookServiceImpl implements BookService{
         return repository.save(existingBook);
     }
 
-    public void deleteBookById(Integer id) throws BookNotFoundException {
+    public void deleteBookById(Integer id) {
         if (!repository.existsById(id)) {
             throw new BookNotFoundException("A book with this id couldn't be found to delete");
         }
